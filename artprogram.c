@@ -57,7 +57,7 @@ void DrawingSystem(SDL_Texture *canvas) {
         Uint32 input = SDL_GetMouseState(&x, &y);
 
         SDL_SetRenderTarget(renderer, canvas);
-        SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
         if (input & SDL_BUTTON(SDL_BUTTON_LEFT)) {
 
