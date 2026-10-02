@@ -1,15 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <SDL2/SDL.h>
-#include <math.h>
+#include <math.h> 
 
 #define WIDTH 1000
 #define HEIGHT 680
 
-int brushSize = 10;
+int brushSize = 5;
 
 
 SDL_Renderer *renderer;
+SDL_Event event;
 
 void DrawCircle(int centerX, int centerY, int radius) {
     for (int y = -radius; y <= radius; y++) {
@@ -47,7 +48,6 @@ void DrawBrush(int x1, int y1, int x2, int y2, int radius) {
     }
 }
 
-
 void DrawingSystem(SDL_Texture *canvas) {
         static int previousX;
         static int previousY;
@@ -57,7 +57,7 @@ void DrawingSystem(SDL_Texture *canvas) {
         Uint32 input = SDL_GetMouseState(&x, &y);
 
         SDL_SetRenderTarget(renderer, canvas);
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
 
         if (input & SDL_BUTTON(SDL_BUTTON_LEFT)) {
 
@@ -86,7 +86,6 @@ void DrawingSystem(SDL_Texture *canvas) {
 
 
 void InitSDL() {
-	SDL_Event event; 
 	SDL_Window *window;
 
 	SDL_Init(SDL_INIT_VIDEO);
@@ -118,12 +117,26 @@ void InitSDL() {
 				case SDL_QUIT:
 					running = 0;
 					break;
+				case SDL_KEYDOWN:
+                                        switch (event.key.keysym.scancode) {
+                                                case SDL_SCANCODE_L:
+                                                        if (brushSize > 1)
+                                                        brushSize--;
+							printf("%d\n", brushSize);
+                                                        break;
+
+                                                case SDL_SCANCODE_H:
+                                                        brushSize++;
+							printf("%d\n", brushSize);
+                                                        break; 
+                                                }
+                                break;
 			}
 		}
 		DrawingSystem(canvas);
 		SDL_RenderCopy(renderer, canvas, NULL, NULL);
 		SDL_RenderPresent(renderer);
-	       SDL_Delay(16);
+	        SDL_Delay(1);
 	}
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
