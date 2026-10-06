@@ -11,6 +11,7 @@ int brushSize = 5;
 
 SDL_Renderer *renderer;
 SDL_Event event;
+SDL_Color brushColor = {0, 0, 255, 255};
 
 void DrawCircle(int centerX, int centerY, int radius) {
     for (int y = -radius; y <= radius; y++) {
@@ -42,9 +43,9 @@ void DrawBrush(int x1, int y1, int x2, int y2, int radius) {
                 float t = (float)i / distance;
 
                 int x = x1 + dx * t;
-        int y = y1 + dy * t;
+                int y = y1 + dy * t;
 
-        DrawCircle(x, y, radius);
+                DrawCircle(x, y, radius);
     }
 }
 
@@ -57,10 +58,9 @@ void DrawingSystem(SDL_Texture *canvas) {
         Uint32 input = SDL_GetMouseState(&x, &y);
 
         SDL_SetRenderTarget(renderer, canvas);
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_SetRenderDrawColor(renderer, brushColor.r, brushColor.g, brushColor.b, brushColor.a);
 
         if (input & SDL_BUTTON(SDL_BUTTON_LEFT)) {
-
                 if (wasDrawing) {
                         DrawBrush(
                                 previousX,
@@ -129,6 +129,15 @@ void InitSDL() {
                                                         brushSize++;
 							printf("%d\n", brushSize);
                                                         break; 
+						case SDL_SCANCODE_R:
+							brushColor = (SDL_Color){255, 0, 0, 255};
+							break;
+						case SDL_SCANCODE_V:
+							brushColor = (SDL_Color){0, 0, 0, 255};
+							break;
+						case SDL_SCANCODE_B:
+							brushColor = (SDL_Color){0, 0, 255, 255};
+							break;
                                                 }
                                 break;
 			}
